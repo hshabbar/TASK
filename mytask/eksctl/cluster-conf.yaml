@@ -1,0 +1,68 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: eks-task
+  region: ap-south-1
+  version: "1.28"
+
+vpc:
+  clusterEndpoints:
+    publicAccess:  true
+    privateAccess: false
+  
+  subnets:
+    public:
+      ap-south-1a: { id: subnet-09e6a6f24a14219a5 }
+      ap-south-1b: { id: subnet-0ecc1ae8b8060e097 }
+    private:
+      ap-south-1a: { id: subnet-0868d40b89974212f }
+      ap-south-1b: { id: subnet-0ee06f2196521d124 }
+
+nodeGroups:
+  - name: nodegroup-1
+    instanceType: t3.medium
+    desiredCapacity: 1
+    privateNetworking: true
+    volumeSize: 20
+#   ssh:
+#     allow: true
+#     publicKeyPath: ~/.config/key.pub
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonSSMFullAccess
+#        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+managedNodeGroups:
+  - name: managed-nodegroup-1
+    minSize: 0
+    maxSize: 5
+    desiredCapacity: 1
+    volumeSize: 20
+#   ssh:
+#     allow: true
+#     publicKeyPath: ~/.config/key.pub
+    instanceType: t3.medium
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonSSMFullAccess
+
+iam:
+  withOIDC: true
+
+addons:
+- name: vpc-cni
+  attachPolicyARNs:
+    - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+- name: coredns
+  version: latest
+- name: kube-proxy
+  version: latest
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["audit", "authenticator", "controllerManager", "api", "scheduler"]
