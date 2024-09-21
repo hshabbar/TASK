@@ -1,3 +1,11 @@
+Brief summary about the approach I have taken:
+- I have created a VPC with public and private subnets in at least 2 availability zones. I have provided the Terraform scripts to accomplish the required use case, utilizing 'modules' as well as 'without using modules'. The modules I have employed are not public ones but rather created by me specifically for this project. Furthermore, I have also included scripts for creating an EKS cluster via Terraform (I have commented on the sections of the script pertaining to the EKS cluster). All the relevant files for this task can be found in the 'mytask/terraform' folder of this GitHub repository.
+
+- I have provided a 'ClusterConfig' file that will be utilized by eksctl to create the EKS cluster as well as the necessary IAM resources. All the relevant files for this task can be found in the 'mytask/eksctl' folder of this GitHub repository.
+
+- I have provided the NGINX webserver deployment and service manifest files. Additionally, I have included the resource output. All the relevant files for this task can be found in the 'mytask/kubernetes_manifests/nginx_web_server' folder of this GitHub repository.
+
+- I have provided the manifests for the primary as well as the canary deployment and services, along with the ingress files. Additionally, I have included the resource output. All the relevant files for this task can be found in the 'mytask/kubernetes_manifests/canary' folder this GitHub repository.
 
 The repository structure for the given task
 ```
