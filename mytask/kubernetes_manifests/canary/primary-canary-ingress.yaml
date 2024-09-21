@@ -3,7 +3,6 @@ kind: Ingress
 metadata:
   name: primary-canary-ingress
   annotations:
-    alb.ingress.kubernetes.io/group.name: traffic-split
     alb.ingress.kubernetes.io/load-balancer-name: primary-canary-lb
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/scheme: internet-facing
