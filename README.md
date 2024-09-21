@@ -39,9 +39,9 @@ The repository structure for the given task
                 └── vpc-and-subnets.tf
 ```
 **Terraform**
-1. First I used terraform to create a VPC with public and private subnets. For my task I used the 'without_modules' approach but I have also tested and uploaded a 'with_modules' approach.
+1. First I used terraform to create a VPC with public and private subnets. For my task, I have used the 'without_modules' approach but I have also tested and uploaded a 'with_modules' approach.
 
-The `vpc-and-subnets.tf` file will create a VPC with public and private subnets. I have also included the `terraform.tfvars` file along with `input.tf` and `output.tf` files for this project and provider is AWS. 
+The `vpc-and-subnets.tf` file will create a VPC with public and private subnets. I have also included the `terraform.tfvars` file along with `input.tf` and `output.tf` files for this project and the provider is AWS. 
 
 `mytask/terraform/without_modules/vpc-and-subnets.tf`
 ```
@@ -202,7 +202,7 @@ terraform apply
 ```
 **Eksctl**
 
-2. The terraform project created the networking infrastructure for me and now I used the recently created VPC and subnets in the below `ClusterConfig` file to be used by eksctl to create an EKS cluster.
+2. The terraform project created the networking infrastructure and I used the above created VPC and subnets in the below `ClusterConfig` file to be used by eksctl to create an EKS cluster.
 
 `mytask/eksctl/cluster-conf.yaml`
 ```
@@ -295,11 +295,6 @@ metadata:
 
 `DEPLOYMENT: mytask/kubernetes_manifests/nginx_web_server/nginx_deployment.yaml`
 ```
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: nginx
-147dda0be993:kubernetes_manifests hshabbar$ cat nginx_web_server/nginx_deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -359,7 +354,7 @@ spec:
 
 4. NGINX webserver resources:
 ```
-$ kubectl get pods
+$ kubectl get pods -n nginx
 NAMESPACE     NAME                               READY   STATUS    RESTARTS   AGE
 nginx         nginx-web-server-5fbf89b59-4v972   1/1     Running   0          57s
 nginx         nginx-web-server-5fbf89b59-f2dw8   1/1     Running   0          57s
@@ -370,7 +365,7 @@ NAMESPACE     NAME                         TYPE           CLUSTER-IP      EXTERN
 nginx         nginx-service-loadbalancer   LoadBalancer   10.100.156.97   a0ee67e5fa233486d800596664dbf476-1718245683.ap-south-1.elb.amazonaws.com   80:31033/TCP             7s
 ```
 
-5. **For the purpose of implementing the canary approach, I had installed the AWS loadbalancer controller**
+5. **For the purpose of implementing the Canary approach, I had installed the AWS loadbalancer controller**
 
 Followed the AWS documentaion to install AWS loadbalancer controller: https://docs.aws.amazon.com/eks/latest/userguide/lbc-manifest.html
 
@@ -407,7 +402,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
   labels:
     app: primary
   name: primary-service
@@ -454,7 +448,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
   labels:
     app: canary
   name: canary-service
@@ -554,6 +547,7 @@ kubectl delete deploy primary
 
 kubectl delete svc nginx-service-loadbalancer -n nginx
 kubectl delete deploy nginx-web-server -n nginx
+kubectl delete namespace nginx
 
 eksctl delete cluster -f cluster-config.yaml
 
