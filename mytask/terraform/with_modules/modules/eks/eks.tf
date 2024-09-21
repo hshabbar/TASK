@@ -78,37 +78,37 @@
 #  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
 #  role       = aws_iam_role.eks_node_role.name
 #}
-
-resource "aws_iam_role_policy_attachment" "noderole-AmazonEKS_CNI_Policy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = aws_iam_role.eks_node_role.name
-}
-
-resource "aws_iam_role_policy_attachment" "noderole-AmazonEC2ContainerRegistryReadOnly" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  role       = aws_iam_role.eks_node_role.name
-}
-
-
-resource "aws_eks_node_group" "managed_ng" {
-  cluster_name    = aws_eks_cluster.my_eks_cluster.name
-  node_group_name = var.nodegroup_name
-  node_role_arn   = aws_iam_role.eks_node_role.arn
-  subnet_ids      = [var.subnet_one, var.subnet_two]
-
-  scaling_config {
-    desired_size = 1
-    max_size     = 5
-    min_size     = 0
-  }
-
-  update_config {
-    max_unavailable = 1
-  }
-
-  depends_on = [
-    aws_iam_role_policy_attachment.noderole-AmazonEKSWorkerNodePolicy,
-    aws_iam_role_policy_attachment.noderole-AmazonEKS_CNI_Policy,
-    aws_iam_role_policy_attachment.noderole-AmazonEC2ContainerRegistryReadOnly,
-  ]
-}
+#
+#resource "aws_iam_role_policy_attachment" "noderole-AmazonEKS_CNI_Policy" {
+#  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+#  role       = aws_iam_role.eks_node_role.name
+#}
+#
+#resource "aws_iam_role_policy_attachment" "noderole-AmazonEC2ContainerRegistryReadOnly" {
+#  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+#  role       = aws_iam_role.eks_node_role.name
+#}
+#
+#
+#resource "aws_eks_node_group" "managed_ng" {
+#  cluster_name    = aws_eks_cluster.my_eks_cluster.name
+#  node_group_name = var.nodegroup_name
+#  node_role_arn   = aws_iam_role.eks_node_role.arn
+#  subnet_ids      = [var.subnet_one, var.subnet_two]
+#
+#  scaling_config {
+#    desired_size = 1
+#    max_size     = 5
+#    min_size     = 0
+#  }
+#
+#  update_config {
+#    max_unavailable = 1
+#  }
+#
+#  depends_on = [
+#    aws_iam_role_policy_attachment.noderole-AmazonEKSWorkerNodePolicy,
+#    aws_iam_role_policy_attachment.noderole-AmazonEKS_CNI_Policy,
+#    aws_iam_role_policy_attachment.noderole-AmazonEC2ContainerRegistryReadOnly,
+#  ]
+#}
