@@ -198,7 +198,7 @@ Used the below commands during the creation of the netwokring infrastructure:
 ```
 terraform init
 terraform plan
-terraform destroy
+terraform apply
 ```
 **Eksctl**
 
